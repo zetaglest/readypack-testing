@@ -136,8 +136,8 @@
 			<type value="build"/>
 			<name value="build_skill"/>
 			<ep-cost value="0"/>
-			<speed value="105"/>
-			<anim-speed value="100"/>
+			<speed value="305"/>
+			<anim-speed value="300"/>
 			<animation path="models/worker_building.g3d"/>
 			<sound enabled="true" start-time="0.5">
 				<sound-file path="$COMMONDATAPATH/sounds/worker_build1.wav"/>
