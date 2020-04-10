@@ -2,9 +2,9 @@
 
 <faction>
 	<starting-resources>
-		<resource name="gold" amount="500"/>
-		<resource name="wood" amount="500"/>
-		<resource name="stone" amount="500"/>
+		<resource name="gold" amount="1500"/>
+		<resource name="wood" amount="800"/>
+		<resource name="stone" amount="1000"/>
 		<resource name="housing" amount="9"/>
 	</starting-resources>
 	<starting-units>
