@@ -150,8 +150,8 @@
 			<type value="harvest"/>
 			<name value="mine_skill"/>
 			<ep-cost value="0"/>
-			<speed value="225"/>
-			<anim-speed value="90"/>
+			<speed value="450"/>
+			<anim-speed value="180"/>
 			<animation path="models/worker_mining.g3d"/>
 			<sound enabled="true" start-time="0.5">
 				<sound-file path="$COMMONDATAPATH/sounds/worker_mine1.wav"/>
@@ -167,8 +167,8 @@
 			<type value="harvest"/>
 			<name value="harvest_wood_skill"/>
 			<ep-cost value="0"/>
-			<speed value="150"/>
-			<anim-speed value="90"/>
+			<speed value="300"/>
+			<anim-speed value="180"/>
 			<animation path="models/worker_harversting_wood.g3d"/>
 			<sound enabled="true" start-time="0.5">
 				<sound-file path="$COMMONDATAPATH/sounds/worker_harvest_wood1.wav"/>
