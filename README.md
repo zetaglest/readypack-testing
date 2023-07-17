@@ -11,3 +11,4 @@ Changes from the original "Indian" faction
 * Thunderbird disabled
 * More gold, wood, and stone
 * Upgrades are fast and free
+* Adds "hold position" command to Axe thrower and Shaman
