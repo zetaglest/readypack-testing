@@ -274,7 +274,7 @@
 				<unit name="fire_golem"/>
 				<unit name="bull"/>
 				<unit name="fire_archer"/>
-				<unit name="thunderbird"/>
+				<!-- unit name="thunderbird"/ -->
 				<unit name="axe_indian"/>
 				<unit name="axe_thrower"/>
                                 <unit name="horseman"/>
