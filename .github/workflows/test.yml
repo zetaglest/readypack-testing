@@ -22,7 +22,7 @@ jobs:
       MOD_VERSION: ${{ github.sha }}
     steps:
     - uses: actions/checkout@v3
-    - uses: megaglest/gh-action-validate-megaglest-mod@make-tidy
+    - uses: megaglest/gh-action-validate-megaglest-mod@v1
       with:
         name: ${{ env.MOD_NAME }}
         type: tech
@@ -48,7 +48,7 @@ jobs:
     - name: Massage Variables
       run: |
         echo "MOD_VERSION=${MOD_VERSION:1}" >> $GITHUB_ENV
-    - uses:  megaglest/gh-action-validate-megaglest-mod@make-tidy
+    - uses:  megaglest/gh-action-validate-megaglest-mod@v1
       with:
         name: ${{ env.MOD_NAME }}
         release_name: ${{ env.RELEASE_NAME }}
