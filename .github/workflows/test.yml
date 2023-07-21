@@ -12,6 +12,7 @@ on:
 
 env:
   MOD_NAME: readypack-testing
+  RELEASE_NAME: 'readypack'
 
 jobs:
   validate-and-build-mod:
@@ -21,17 +22,22 @@ jobs:
       MOD_VERSION: ${{ github.sha }}
     steps:
     - uses: actions/checkout@v3
-    - uses: zetaglest/gh-action-validate-megaglest-mod@pr1-fixed
+    - uses: megaglest/gh-action-validate-megaglest-mod@make-tidy
       with:
         name: ${{ env.MOD_NAME }}
-        version: ${{ env.MOD_VERSION }}
+        release_name: ${{ env.RELEASE_NAME }}
         type: tech
-    #- name: Upload Artifacts
-      ## Uploads artifacts (combined into a zip file) to the workflow output page
-      #uses: actions/upload-artifact@v3
-      #with:
-        #name: ${{ env.MOD_NAME }}-${{ env.MOD_VERSION }}
-        #path: "output/${{ env.MOD_NAME }}*.*"
+    - name: Make 7z
+      run: |
+        cd output
+        7z a $RELEASE_NAME.7z $RELEASE_NAME
+
+    - name: Upload Artifacts
+      # Uploads artifacts (combined into a zip file) to the workflow output page
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.RELEASE_NAME }}-${{ env.MOD_VERSION }}
+        path: "output/${{ env.RELEASE_NAME }}*.7z"
 
   release-mod:
     if: ${{ github.ref_type == 'tag' }}
@@ -46,11 +52,19 @@ jobs:
     - uses:  megaglest/gh-action-validate-megaglest-mod@v1
       with:
         name: ${{ env.MOD_NAME }}
-        version: ${{ env.MOD_VERSION }}
-      id: build-mod
+        release_name: ${{ env.RELEASE_NAME }}
+        type: tech
+    - name: Make 7z
+      run: |
+        cd output/$RELEASE_NAME
+        sudo mv $RELEASE_NAME.xml $RELEASE_NAME-$MOD_VERSION.xml
+        cd ..
+        sudo mv $RELEASE_NAME $RELEASE_NAME-$MOD_VERSION
+        7z a $RELEASE_NAME-$MOD_VERSION.7z $RELEASE_NAME-$MOD_VERSION
+        sudo rm -rf $RELEASE_NAME-$MOD_VERSION
     - name: Create sha256sum
       run:  |
-        OUTPUT_FILE="$MOD_NAME-$MOD_VERSION.7z"
+        OUTPUT_FILE="$RELEASE_NAME-$MOD_VERSION.7z"
         cd output
         sha256sum $OUTPUT_FILE > $OUTPUT_FILE.sha256sum
     - name: Release Mod
@@ -58,7 +72,7 @@ jobs:
       with:
         allowUpdates: True
         prerelease: False
-        artifacts: "output/${{ env.MOD_NAME }}*.*"
+        artifacts: "output/${{ env.RELEASE_NAME }}*.*"
         token: ${{ secrets.GITHUB_TOKEN }}
         omitNameDuringUpdate: True
         omitBodyDuringUpdate: True
