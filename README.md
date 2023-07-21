@@ -1,3 +1,5 @@
+[![Validate MegaGlest mod](https://github.com/zetaglest/readypack-testing/actions/workflows/test.yml/badge.svg)](https://github.com/zetaglest/readypack-testing/actions/workflows/test.yml)
+
 # readypack-testing
 
 A [MegaGlest](https://megaglest.org/) mod
