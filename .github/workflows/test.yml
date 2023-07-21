@@ -25,19 +25,18 @@ jobs:
     - uses: megaglest/gh-action-validate-megaglest-mod@make-tidy
       with:
         name: ${{ env.MOD_NAME }}
-        release_name: ${{ env.RELEASE_NAME }}
         type: tech
     - name: Make 7z
       run: |
         cd output
-        7z a $RELEASE_NAME.7z $RELEASE_NAME
+        7z a $MOD_NAME.7z $MOD_NAME
 
     - name: Upload Artifacts
       # Uploads artifacts (combined into a zip file) to the workflow output page
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.RELEASE_NAME }}-${{ env.MOD_VERSION }}
-        path: "output/${{ env.RELEASE_NAME }}*.7z"
+        name: ${{ env.MOD_NAME }}-${{ env.MOD_VERSION }}
+        path: "output/${{ env.MOD_NAME }}*.7z"
 
   release-mod:
     if: ${{ github.ref_type == 'tag' }}
