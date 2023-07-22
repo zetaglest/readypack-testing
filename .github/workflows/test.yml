@@ -28,20 +28,17 @@ jobs:
         release_name: ${{ env.RELEASE_NAME }}
         type: tech
     - if: ${{ github.ref_type == 'tag' }}
-      name: Make 7z
+      name: Make 7z and sha256sum
       run: |
+        OUT_FILE="$RELEASE_NAME-$MOD_VERSION"
         cd output/$RELEASE_NAME
-        sudo mv $RELEASE_NAME.xml $RELEASE_NAME-$MOD_VERSION.xml
+        sudo mv $RELEASE_NAME.xml "$OUT_FILE".xml
         cd ..
-        sudo mv $RELEASE_NAME $RELEASE_NAME-$MOD_VERSION
-        7z a $RELEASE_NAME-$MOD_VERSION.7z $RELEASE_NAME-$MOD_VERSION
-        sudo rm -rf $RELEASE_NAME-$MOD_VERSION
-    - if: ${{ github.ref_type == 'tag' }}
-      name: Create sha256sum
-      run:  |
-        OUTPUT_FILE="$RELEASE_NAME-$MOD_VERSION.7z"
+        sudo mv "$RELEASE_NAME" "$OUT_FILE"
+        7z a "$OUT_FILE.7z" "$OUT_FILE"
+        sudo rm -rf "$OUT_FILE"
         cd output
-        sha256sum $OUTPUT_FILE > $OUTPUT_FILE.sha256sum
+        sha256sum "$OUT_FILE.7z" > "$OUT_FILE.7z.sha256sum"
     - if: ${{ github.ref_type == 'tag' }}
       name: Release Mod
       uses: ncipollo/release-action@v1
