@@ -10,50 +10,25 @@ on:
     branches:
       - master
 
-env:
-  MOD_NAME: readypack-testing
-  RELEASE_NAME: 'readypack'
-
 jobs:
-  validate-and-build-mod:
-    if: ${{ github.ref_type != 'tag' }}
+  validate-mod:
     runs-on: ubuntu-latest
     env:
-      MOD_VERSION: ${{ github.sha }}
+      MOD_NAME: readypack-testing
+      RELEASE_NAME: 'readypack'
     steps:
     - uses: actions/checkout@v3
-    - uses: megaglest/gh-action-validate-megaglest-mod@v1
-      with:
-        name: ${{ env.MOD_NAME }}
-        type: tech
-    - name: Make 7z
+    - if: ${{ github.ref_type == 'tag' }}
       run: |
-        cd output
-        7z a $MOD_NAME.7z $MOD_NAME
-
-    - name: Upload Artifacts
-      # Uploads artifacts (combined into a zip file) to the workflow output page
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ env.MOD_NAME }}-${{ env.MOD_VERSION }}
-        path: "output/${{ env.MOD_NAME }}*.7z"
-
-  release-mod:
-    if: ${{ github.ref_type == 'tag' }}
-    runs-on: ubuntu-latest
-    env:
-      MOD_VERSION: ${{ github.ref_name }}
-    steps:
-    - uses: actions/checkout@v3
-    - name: Massage Variables
-      run: |
+        MOD_VERSION: ${{ github.ref_name }}
         echo "MOD_VERSION=${MOD_VERSION:1}" >> $GITHUB_ENV
     - uses:  megaglest/gh-action-validate-megaglest-mod@v1
       with:
         name: ${{ env.MOD_NAME }}
         release_name: ${{ env.RELEASE_NAME }}
         type: tech
-    - name: Make 7z
+    - if: ${{ github.ref_type == 'tag' }}
+      name: Make 7z
       run: |
         cd output/$RELEASE_NAME
         sudo mv $RELEASE_NAME.xml $RELEASE_NAME-$MOD_VERSION.xml
@@ -61,12 +36,14 @@ jobs:
         sudo mv $RELEASE_NAME $RELEASE_NAME-$MOD_VERSION
         7z a $RELEASE_NAME-$MOD_VERSION.7z $RELEASE_NAME-$MOD_VERSION
         sudo rm -rf $RELEASE_NAME-$MOD_VERSION
-    - name: Create sha256sum
+    - if: ${{ github.ref_type == 'tag' }}
+      name: Create sha256sum
       run:  |
         OUTPUT_FILE="$RELEASE_NAME-$MOD_VERSION.7z"
         cd output
         sha256sum $OUTPUT_FILE > $OUTPUT_FILE.sha256sum
-    - name: Release Mod
+    - if: ${{ github.ref_type == 'tag' }}
+      name: Release Mod
       uses: ncipollo/release-action@v1
       with:
         allowUpdates: True
