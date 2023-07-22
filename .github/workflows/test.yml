@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v3
     - if: ${{ github.ref_type == 'tag' }}
       run: |
-        MOD_VERSION: ${{ github.ref_name }}
+        MOD_VERSION=${{ github.ref_name }}
         echo "MOD_VERSION=${MOD_VERSION:1}" >> $GITHUB_ENV
     - uses:  megaglest/gh-action-validate-megaglest-mod@v1
       with:
